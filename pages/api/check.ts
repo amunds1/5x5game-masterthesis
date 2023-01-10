@@ -1,15 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import checkRowOrColumn from './utils/checkRowOrColumn'
-import CheckBoardResponseData from './types/CheckBoardResponseData'
 import CheckBoardRequestData from './types/CheckBoardRequestData'
-import { updateRowPoints, updateColumnPoints } from './utils/updatePoints'
+import CheckBoardResponseData from './types/CheckBoardResponseData'
+import newCheckRowOrColumn from './utils/newCheckRowOrColumn'
 import { updateBoard } from './utils/updateBoard'
+import { updateColumnPoints, updateRowPoints } from './utils/updatePoints'
 import {
   updateValidColumnWords,
   updateValidRowWords,
 } from './utils/updateValidWords'
-import { updateTurn } from './utils/updateTurn'
 
 export default async function handler(
   req: NextApiRequest,
@@ -27,7 +26,7 @@ export default async function handler(
   const boardData: CheckBoardRequestData = { ...req.body }
 
   // Check row
-  const validWordInRow = await checkRowOrColumn(
+  const validWordInRow = await newCheckRowOrColumn(
     boardData.row.data,
     boardData.row.differentIndex
   )
@@ -47,7 +46,7 @@ export default async function handler(
   }
 
   // Check column
-  const validWordInColumn = await checkRowOrColumn(
+  const validWordInColumn = await newCheckRowOrColumn(
     boardData.column.data,
     boardData.column.differentIndex
   )

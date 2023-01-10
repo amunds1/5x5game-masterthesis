@@ -17,8 +17,6 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
     label: string
   }>({ value: 0, label: '' })
 
-  console.log('Proposed at', game.proposedAt as Date)
-
   useEffect(() => {
     const proposedAtAsDate = new Date(game.proposedAt as Date)
     const timeDelta = Date.now() - proposedAtAsDate.getTime()

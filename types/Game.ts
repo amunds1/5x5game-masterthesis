@@ -1,4 +1,5 @@
 import { DocumentData, DocumentReference, Timestamp } from 'firebase/firestore'
+import GameStates from '../components/game/types/gameStates'
 
 interface Game {
   id?: string
@@ -10,6 +11,7 @@ interface Game {
   proposedBy: DocumentReference<DocumentData> | string
   nextTurn: DocumentReference<DocumentData> | string
   selectedLetter: string | null
+  gameState: GameStates
 }
 
 export default Game

@@ -9,7 +9,7 @@ const isPartOfValidWord = (
     if (Number(key) === position.positionIndex) {
       if (
         position.differenceIndex >= value[0] &&
-        position.differenceIndex < value[1]
+        position.differenceIndex <= value[1]
       ) {
         return true
       }

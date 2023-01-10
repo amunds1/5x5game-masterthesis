@@ -3,6 +3,7 @@ import { db } from '../../../firebase/clientApp'
 import generateGameConfig from '../constants/BaseGameConfig'
 import gamesConverter from '../../../firebase/converters/gamesConverter'
 import updateUserGamesList from './updateUserGamesList'
+import GameStates from '../types/gameStates'
 
 export const generateBoardDataDocRef = (gameID: string, userID: string) =>
   // Path: games (collection) -> gameID (document) -> userID (subcollection) -> boardData (document)
@@ -31,6 +32,7 @@ const addGameToCollection = async (
       proposedBy: userDocRef,
       nextTurn: oponentDocRef,
       selectedLetter: null,
+      gameState: GameStates.CHOOSE,
     }
   )
 
@@ -53,8 +55,10 @@ const addGameToCollection = async (
       generateGameConfig(boardSizeAsNumber)
     ))
 
-  updateUserGamesList(docRef, userDocRef)
-  updateUserGamesList(docRef, oponentDocRef)
+  await updateUserGamesList(docRef, userDocRef)
+  await updateUserGamesList(docRef, oponentDocRef)
+
+  return true
 }
 
 export default addGameToCollection

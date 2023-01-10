@@ -1,7 +1,8 @@
 import { Button, Radio, Select, SelectItem, Stack } from '@mantine/core'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useCallback, useState } from 'react'
 import addGameToCollection from '../../../components/game/firebase/addToGameCollection'
 import { fetchUsersAsSelectOptions } from '../../../components/game/firebase/fetchUsersAsSelectOptions'
 import fetchUID from '../../../firebase/fetchUID'
@@ -26,7 +27,17 @@ const NewGame = (props: INewGame) => {
   const { oponentOptions, uid } = props
 
   const [oponent, setOponent] = useState<string | null>(null)
-  const [boardSize, setBoardSize] = useState<string>()
+  const [boardSize, setBoardSize] = useState<string | undefined>(undefined)
+
+  const router = useRouter()
+
+  const onClick = async () => {
+    addGameToCollection(uid, oponent as string, boardSize as string).then(
+      () => {
+        router.push('/games')
+      }
+    )
+  }
 
   return (
     <Stack>
@@ -56,16 +67,12 @@ const NewGame = (props: INewGame) => {
       </Radio.Group>
 
       <Button
-        disabled={!oponent}
-        onClick={() => {
-          oponent &&
-            uid &&
-            boardSize &&
-            addGameToCollection(uid, oponent, boardSize)
-        }}
+        disabled={!oponent || !boardSize?.length}
+        onClick={() => onClick()}
       >
         Propose game
       </Button>
+
       <Link href="/games">
         <Button>Back to games list</Button>
       </Link>
